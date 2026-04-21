@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AutoGest'),
+        title: const Text("Inicio"),
         actions: [
           IconButton(
             onPressed: () => logout(context),
