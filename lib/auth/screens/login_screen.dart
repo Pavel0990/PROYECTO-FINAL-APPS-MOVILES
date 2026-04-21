@@ -1,56 +1,62 @@
 import 'package:flutter/material.dart';
-import '../home/home_screen.dart';
-import '../../services/auth_service.dart';
+import '../services/auth_service.dart';
+import '../widgets/custom_textfield.dart';
+import 'register_screen.dart';
+import 'forgot_password_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginScreen extends StatelessWidget {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final AuthService _auth = AuthService();
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController userController = TextEditingController();
-  final TextEditingController passController = TextEditingController();
-
-  Future<void> fakeLogin() async {
-    await AuthService.saveTokens('demo_token', 'demo_refresh');
-
-    if (!mounted) return;
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const HomeScreen()),
+  void login(BuildContext context) async {
+    String? error = await _auth.login(
+      emailController.text.trim(),
+      passwordController.text.trim(),
     );
-  }
 
-  @override
-  void dispose() {
-    userController.dispose();
-    passController.dispose();
-    super.dispose();
+    if (error != null) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(error)));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(title: Text("Login")),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            TextField(
-              controller: userController,
-              decoration: const InputDecoration(labelText: 'Usuario'),
+            CustomTextField(controller: emailController, label: "Email"),
+            SizedBox(height: 10),
+            CustomTextField(
+                controller: passwordController,
+                label: "Password",
+                isPassword: true),
+            SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: () => login(context),
+              child: Text("Iniciar sesión"),
             ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: passController,
-              obscureText: true,
-              decoration: const InputDecoration(labelText: 'Contraseña'),
+
+            TextButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => RegisterScreen()));
+              },
+              child: Text("Crear cuenta"),
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(onPressed: fakeLogin, child: const Text('Entrar')),
+
+            TextButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => ForgotPasswordScreen()));
+              },
+              child: Text("¿Olvidaste tu contraseña?"),
+            ),
           ],
         ),
       ),
