@@ -1,39 +1,37 @@
 class Vehiculo {
-  final int? id;
-  final String marca;
-  final String modelo;
-  final String ano;
-  final String placa;
-  final String color;
+  final String? id;
+  final String placa, chasis, marca, modelo, anio, ruedas;
+  final String? fotoUrl;
 
   Vehiculo({
     this.id,
+    required this.placa,
+    required this.chasis,
     required this.marca,
     required this.modelo,
-    required this.ano,
-    required this.placa,
-    required this.color,
+    required this.anio,
+    required this.ruedas,
+    this.fotoUrl,
   });
 
-  factory Vehiculo.fromJson(Map<String, dynamic> json) {
-    return Vehiculo(
-      id: json['id'],
-      marca: json['marca'] ?? '',
-      modelo: json['modelo'] ?? '',
-      ano: json['ano']?.toString() ?? '',
-      placa: json['placa'] ?? '',
-      color: json['color'] ?? '',
-    );
-  }
+  factory Vehiculo.fromJson(Map<String, dynamic> json) => Vehiculo(
+    id: json['id']?.toString(),
+    placa: json['placa']?.toString() ?? '',
+    chasis: json['chasis']?.toString() ?? '',
+    marca: json['marca']?.toString() ?? '',
+    modelo: json['modelo']?.toString() ?? '',
+    anio: json['anio']?.toString() ?? '',
+    ruedas: json['cantidad_ruedas']?.toString() ?? '4',
+    fotoUrl: json['foto_url'],
+  );
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'marca': marca,
-      'modelo': modelo,
-      'ano': ano,
-      'placa': placa,
-      'color': color,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+    if (id != null) 'id': id,
+    'placa': placa,
+    'chasis': chasis,
+    'marca': marca,
+    'modelo': modelo,
+    'anio': anio,
+    'cantidad_ruedas': ruedas,
+  };
 }
