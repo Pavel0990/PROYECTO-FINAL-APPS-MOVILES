@@ -85,6 +85,10 @@ Telegram: RPV
 Angel Antonio Gomera Romero
 2022-0493
 
+Hector Ezequiel Corcino Fernandez
+2023-1904
+
+
 Arquitectura del proyecto:
 lib/
  └── features/
